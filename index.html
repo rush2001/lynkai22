@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lynk AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #0a0a0a; color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #E50914; border-radius: 4px; }
+
+/* ---- NAV ---- */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 9999;
+  background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229,9,20,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 68px;
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 3px; cursor: pointer; color: #fff; }
+.logo span { color: #E50914; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: #aaa; text-decoration: none; font-size: 0.82rem; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: color 0.25s;
+}
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+.nav-cta {
+  background: #E50914; color: #fff; padding: 9px 22px; border: none; border-radius: 4px;
+  cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; transition: background 0.25s;
+}
+.nav-cta:hover { background: #b2070f; }
+
+/* ---- PAGES ---- */
+.page { display: none; min-height: 100vh; padding-top: 68px; }
+.page.active { display: block; }
+
+/* ---- BUTTONS ---- */
+.btn-red {
+  background: #E50914; color: #fff; padding: 13px 32px; border: none; border-radius: 4px;
+  cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; transition: background 0.25s, transform 0.2s;
+  display: inline-block;
+}
+.btn-red:hover { background: #b2070f; transform: translateY(-2px); }
+.btn-ghost {
+  background: transparent; color: #fff; padding: 13px 32px;
+  border: 1px solid rgba(255,255,255,0.3); border-radius: 4px;
+  cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 500;
+  transition: border-color 0.25s, background 0.25s; display: inline-block;
+}
+.btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.06); }
+
+/* ---- HERO ---- */
+.hero {
+  min-height: calc(100vh - 68px); display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  background: radial-gradient(ellipse at 65% 50%, rgba(229,9,20,0.07) 0%, transparent 60%), #0a0a0a;
+  padding: 0 5vw;
+}
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(229,9,20,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(229,9,20,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-content { position: relative; z-index: 2; max-width: 780px; }
+.hero-badge {
+  display: inline-block; border: 1px solid rgba(229,9,20,0.5); color: #E50914;
+  background: rgba(229,9,20,0.08); font-size: 0.7rem; letter-spacing: 4px;
+  text-transform: uppercase; padding: 6px 16px; border-radius: 2px; margin-bottom: 24px;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 9vw, 8.5rem); line-height: 0.92; letter-spacing: 2px; margin-bottom: 24px;
+}
+.hero-title .red { color: #E50914; }
+.hero-sub { color: #999; font-size: 1rem; line-height: 1.75; max-width: 520px; margin-bottom: 36px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-stats {
+  position: absolute; right: 5vw; bottom: 15vh;
+  display: flex; flex-direction: column; gap: 32px; text-align: right;
+}
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: #E50914; line-height: 1; }
+.stat-lbl { font-size: 0.68rem; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+
+/* ---- SECTION HELPERS ---- */
+.tag { color: #E50914; font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 12px; }
+.big-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 0.95; }
+.big-title .red { color: #E50914; }
+.bar { width: 52px; height: 3px; background: #E50914; margin: 16px 0 48px; }
+.bar.center { margin-left: auto; margin-right: auto; }
+
+/* ---- ICON BOX ---- */
+.ibox {
+  width: 46px; height: 46px; border-radius: 6px;
+  background: rgba(229,9,20,0.1); border: 1px solid rgba(229,9,20,0.2);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+}
+.ibox svg { width: 20px; height: 20px; stroke: #E50914; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- WHY US ---- */
+.why-section { padding: 90px 5vw; background: #111; }
+.why-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.feat-card {
+  background: #0a0a0a; border: 1px solid rgba(229,9,20,0.1); border-radius: 8px;
+  padding: 28px 20px; transition: transform 0.3s;
+}
+.feat-card:hover { transform: translateY(-5px); }
+.feat-card h4 { font-size: 0.92rem; margin-bottom: 6px; }
+.feat-card p { color: #555; font-size: 0.8rem; line-height: 1.6; }
+
+/* ---- CORE SERVICES ---- */
+.core-section { padding: 90px 5vw; }
+.core-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; max-width: 1200px; margin: 0 auto; }
+.core-card {
+  background: #111; padding: 36px 24px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.04); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  /* pop-up animation */
+  opacity: 0; transform: translateY(50px) scale(0.9);
+  transition: opacity 0.55s cubic-bezier(0.34,1.56,0.64,1), transform 0.55s cubic-bezier(0.34,1.56,0.64,1),
+              border-color 0.3s, box-shadow 0.3s;
+}
+.core-card.popped { opacity: 1; transform: translateY(0) scale(1); }
+.core-card:nth-child(1) { transition-delay: 0s,   0s,   0s,   0s; }
+.core-card:nth-child(2) { transition-delay: 0.1s, 0.1s, 0s,   0s; }
+.core-card:nth-child(3) { transition-delay: 0.2s, 0.2s, 0s,   0s; }
+.core-card:nth-child(4) { transition-delay: 0.3s, 0.3s, 0s,   0s; }
+.core-card:nth-child(5) { transition-delay: 0.4s, 0.4s, 0s,   0s; }
+.core-card:hover { border-color: rgba(229,9,20,0.3); transform: translateY(-5px) !important; box-shadow: 0 16px 40px rgba(229,9,20,0.1); }
+.core-card h4 { font-size: 0.92rem; margin-bottom: 6px; }
+.core-card p { color: #555; font-size: 0.78rem; margin-bottom: 14px; }
+.core-card .clink { font-size: 0.7rem; color: #E50914; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #E50914; padding-bottom: 1px; }
+
+/* ---- CTA BAND ---- */
+.cta-band {
+  padding: 80px 5vw; background: #E50914; text-align: center; position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: ''; position: absolute; inset: 0; opacity: 0.06;
+  background-image: repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);
+  background-size: 24px 24px;
+}
+.cta-band h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem,4vw,3.2rem); margin-bottom: 14px; position: relative; }
+.cta-band p { color: rgba(255,255,255,0.85); margin-bottom: 30px; position: relative; }
+.cta-band button {
+  background: #fff; color: #E50914; padding: 13px 40px; border: none; border-radius: 4px;
+  cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; position: relative; transition: transform 0.2s;
+}
+.cta-band button:hover { transform: scale(1.04); }
+
+/* ---- SERVICES PAGE ---- */
+.svc-header { padding: 70px 5vw 44px; text-align: center; }
+.svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; padding: 0 5vw 80px; max-width: 1400px; margin: 0 auto; }
+.svc-card {
+  background: #111; padding: 44px 32px; border: 1px solid rgba(255,255,255,0.04);
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.svc-card:hover { border-color: rgba(229,9,20,0.25); transform: translateY(-4px); box-shadow: 0 18px 50px rgba(0,0,0,0.4); }
+.svc-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; }
+.svc-card p { color: #777; font-size: 0.86rem; line-height: 1.7; margin-bottom: 26px; }
+.svc-btn {
+  background: transparent; border: 1px solid #E50914; color: #E50914;
+  padding: 9px 20px; border-radius: 3px; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; transition: all 0.25s;
+}
+.svc-btn:hover { background: #E50914; color: #fff; }
+
+/* ---- ABOUT PAGE ---- */
+.about-hero { padding: 70px 5vw 60px; }
+.about-body { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; padding: 0 5vw 80px; align-items: center; }
+.orbit-wrap {
+  height: 460px; background: #111; border: 1px solid rgba(229,9,20,0.1);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+}
+.orbit-text { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem; color: rgba(229,9,20,0.04); letter-spacing: 10px; }
+.ring1 { width: 280px; height: 280px; border-radius: 50%; border: 1px solid rgba(229,9,20,0.18); position: absolute; animation: spin 20s linear infinite; }
+.ring1::before { content: ''; width: 10px; height: 10px; background: #E50914; border-radius: 50%; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 12px #E50914; }
+.ring2 { width: 150px; height: 150px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.05); position: absolute; animation: spin 10s linear infinite reverse; }
+.dot { width: 10px; height: 10px; background: #E50914; border-radius: 50%; position: absolute; box-shadow: 0 0 18px #E50914; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.about-text p { color: #999; line-height: 1.85; margin-bottom: 18px; font-size: 0.95rem; }
+.val-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.val-item { padding: 18px; background: #111; border: 1px solid rgba(255,255,255,0.04); border-radius: 6px; }
+.val-item h5 { color: #E50914; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.val-item p { color: #555; font-size: 0.8rem; line-height: 1.5; }
+.stats-band { background: #111; padding: 70px 5vw; }
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; max-width: 800px; margin: 0 auto; }
+.stat-box { background: #0a0a0a; padding: 36px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.04); }
+.stat-box .num { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; color: #E50914; }
+.stat-box .lbl { color: #555; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+/* ---- CONTACT PAGE ---- */
+.contact-hero { padding: 70px 5vw 60px; }
+.contact-body { display: grid; grid-template-columns: 1fr 1.5fr; gap: 70px; padding: 0 5vw 80px; }
+.c-item { display: flex; gap: 14px; margin-bottom: 22px; align-items: flex-start; }
+.c-ico { width: 40px; height: 40px; background: rgba(229,9,20,0.08); border: 1px solid rgba(229,9,20,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.c-ico svg { width: 17px; height: 17px; stroke: #E50914; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.c-lbl strong { display: block; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 3px; }
+.c-lbl span { color: #bbb; font-size: 0.9rem; }
+.fg { margin-bottom: 16px; }
+.fg label { display: block; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 7px; }
+.fg input, .fg textarea, .fg select {
+  width: 100%; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px; color: #fff; font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem; padding: 12px 14px; outline: none; transition: border-color 0.25s;
+}
+.fg input:focus, .fg textarea:focus, .fg select:focus { border-color: #E50914; }
+.fg textarea { height: 120px; resize: vertical; }
+.fg select option { background: #1a1a1a; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ---- FOOTER ---- */
+footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding: 56px 5vw 28px; }
+.ft-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+.ft-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 3px; display: block; margin-bottom: 12px; }
+.ft-logo span { color: #E50914; }
+.ft-brand p { color: #555; font-size: 0.8rem; line-height: 1.75; max-width: 230px; }
+.ft-col h5 { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 16px; }
+.ft-col ul { list-style: none; }
+.ft-col ul li { margin-bottom: 9px; }
+.ft-col ul li a { color: #666; text-decoration: none; font-size: 0.82rem; cursor: pointer; transition: color 0.25s; }
+.ft-col ul li a:hover { color: #E50914; }
+.ft-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); }
+.ft-bottom p { color: #333; font-size: 0.76rem; }
+.ft-bottom .r { color: #E50914; }
+
+/* ---- MODAL OVERLAY ---- */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
+  align-items: flex-start; justify-content: center;
+  padding: 80px 20px 20px; overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #111; border: 1px solid rgba(229,9,20,0.2); border-radius: 8px;
+  width: 100%; max-width: 1020px; animation: mup 0.3s cubic-bezier(0.34,1.4,0.64,1);
+  position: relative;
+}
+@keyframes mup { from { opacity:0; transform: translateY(40px); } to { opacity:1; transform: translateY(0); } }
+.modal-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 34px 40px 26px; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.modal-head h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; }
+.modal-head p { color: #777; font-size: 0.85rem; margin-top: 5px; }
+.modal-x {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(229,9,20,0.1); border: 1px solid rgba(229,9,20,0.3); color: #E50914;
+  cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; flex-shrink: 0; margin-left: 16px;
+}
+.modal-x:hover { background: #E50914; color: #fff; }
+.modal-body { padding: 34px 40px; }
+
+/* ---- PRICING CARDS (modal) ---- */
+.pkg-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+.pkg {
+  background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px;
+  padding: 28px 22px; position: relative; transition: transform 0.25s;
+}
+.pkg:hover { transform: translateY(-4px); }
+.pkg.pop { border-color: #E50914; box-shadow: 0 0 36px rgba(229,9,20,0.12); }
+.pkg.pop::before {
+  content: 'POPULAR'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: #E50914; color: #fff; font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 2px; padding: 3px 12px; border-radius: 20px;
+}
+.pkg-tier { color: #E50914; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; }
+.pkg-name { font-size: 1rem; font-weight: 600; }
+.pkg-price { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: #fff; line-height: 1; margin: 14px 0 4px; }
+.pkg-for { color: #666; font-size: 0.78rem; margin-bottom: 18px; }
+.pkg-feats { list-style: none; margin-bottom: 22px; }
+.pkg-feats li {
+  font-size: 0.8rem; color: #999; padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.pkg-feats li::before { content: '—'; color: #E50914; flex-shrink: 0; }
+.pkg-cta {
+  width: 100%; background: transparent; border: 1px solid rgba(229,9,20,0.5); color: #E50914;
+  padding: 10px; border-radius: 4px; cursor: pointer; font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: all 0.25s;
+}
+.pkg-cta:hover { background: #E50914; color: #fff; border-color: #E50914; }
+.pkg.pop .pkg-cta { background: #E50914; color: #fff; border-color: #E50914; }
+.pkg.pop .pkg-cta:hover { background: #b2070f; }
+
+/* ---- ADD-ONS + PAYMENT ROW ---- */
+.extra-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.extra-box { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 24px 26px; }
+.extra-box.red-box { background: rgba(229,9,20,0.05); border-color: rgba(229,9,20,0.2); }
+.box-tag { color: #E50914; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+.ao-table { width: 100%; border-collapse: collapse; }
+.ao-table thead th { font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; color: #555; font-weight: 500; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.ao-table thead th:last-child { text-align: right; }
+.ao-table tbody td { padding: 11px 0; font-size: 0.88rem; color: #ccc; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.ao-table tbody tr:last-child td { border-bottom: none; }
+.ao-table .price-cell { text-align: right; font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #E50914; }
+.pay-row { display: flex; flex-direction: column; gap: 8px; }
+.pay-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05); border-radius: 6px;
+}
+.pay-item.highlight { background: rgba(229,9,20,0.08); border-color: rgba(229,9,20,0.2); }
+.pay-item span { font-size: 0.85rem; color: #bbb; }
+.pay-item strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #fff; }
+.pay-item.highlight strong { color: #E50914; }
+
+/* ---- AI ADD-ON BOX ---- */
+.ai-box {
+  background: rgba(229,9,20,0.04); border: 1px solid rgba(229,9,20,0.18);
+  border-radius: 8px; padding: 24px 28px; display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+}
+.ai-box h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+.ai-box p { color: #777; font-size: 0.82rem; line-height: 1.6; }
+.ai-box .ai-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #E50914; white-space: nowrap; text-align: right; }
+.ai-box .ai-sub { font-size: 0.72rem; color: #555; margin-bottom: 10px; }
+
+/* ---- INFO MODAL (ERP, CRM etc) ---- */
+.info-body { color: #aaa; font-size: 0.9rem; line-height: 1.8; }
+.info-body h4 { color: #fff; font-size: 0.98rem; font-weight: 600; margin: 24px 0 8px; }
+.info-body h4:first-child { margin-top: 0; }
+.info-body ul { padding-left: 18px; color: #888; }
+.info-body ul li { margin-bottom: 5px; font-size: 0.84rem; }
+.ph { color: #E50914; font-weight: 600; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .hero-stats { display: none; }
+  .why-grid, .about-body, .contact-body { grid-template-columns: 1fr; }
+  .core-grid { grid-template-columns: repeat(2,1fr); }
+  .pkg-grid { grid-template-columns: 1fr; }
+  .extra-row { grid-template-columns: 1fr; }
+  .ft-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .hero-btns { flex-direction: column; }
+  .core-grid { grid-template-columns: 1fr; }
+  .ft-grid { grid-template-columns: 1fr; }
+  .frow { grid-template-columns: 1fr; }
+  .modal-head, .modal-body { padding: 22px; }
+  .ai-box { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav>
+  <span class="logo" onclick="go('home')">LYNK<span>.</span>AI</span>
+  <ul class="nav-links">
+    <li><a id="n-home" class="active" onclick="go('home')">Home</a></li>
+    <li><a id="n-services" onclick="go('services')">Services</a></li>
+    <li><a id="n-about" onclick="go('about')">About</a></li>
+    <li><a id="n-contact" onclick="go('contact')">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="go('contact')">Get Started</button>
+</nav>
+
+<!-- ========================================= -->
+<!--              HOME PAGE                    -->
+<!-- ========================================= -->
+<div id="pg-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Next-Generation Digital Solutions</div>
+      <h1 class="hero-title">BUILD<br>SMARTER<br><span class="red">WITH AI.</span></h1>
+      <p class="hero-sub">Lynk AI delivers intelligent websites, ERP systems, mobile apps, CRM platforms and custom product development — powered by artificial intelligence.</p>
+      <div class="hero-btns">
+        <button class="btn-red" onclick="go('services')">Explore Services</button>
+        <button class="btn-ghost" onclick="go('contact')">Talk to Us</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">30+</div><div class="stat-lbl">Projects Delivered</div></div>
+      <div><div class="stat-num">98%</div><div class="stat-lbl">Client Satisfaction</div></div>
+      <div><div class="stat-num">2 Yrs</div><div class="stat-lbl">Since Launch</div></div>
+    </div>
+  </div>
+
+  <!-- WHY US -->
+  <div class="why-section">
+    <div class="why-grid">
+      <div>
+        <p class="tag">Why Choose Us</p>
+        <h2 class="big-title">WE DON'T<br>JUST BUILD,<br><span class="red">WE CONNECT.</span></h2>
+        <div class="bar"></div>
+        <p style="color:#999;line-height:1.85;margin-bottom:14px;font-size:0.95rem;">At Lynk AI, technology bridges the gap between your vision and your customers. Every solution is infused with intelligence, designed to scale, and built to perform.</p>
+        <p style="color:#999;line-height:1.85;font-size:0.95rem;">From the first wireframe to post-launch support — we are your end-to-end digital partner.</p>
+        <button class="btn-red" onclick="go('about')" style="margin-top:28px;">Our Story</button>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="ibox"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <h4>AI-Powered</h4>
+          <p>Smart chatbots and automation built into every product.</p>
+        </div>
+        <div class="feat-card">
+          <div class="ibox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <h4>Fast Delivery</h4>
+          <p>Agile workflows that get you to market quickly.</p>
+        </div>
+        <div class="feat-card">
+          <div class="ibox"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <h4>Results-Driven</h4>
+          <p>KPI-focused strategy from discovery to delivery.</p>
+        </div>
+        <div class="feat-card">
+          <div class="ibox"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h4>Secure &amp; Scalable</h4>
+          <p>Enterprise-grade security baked in from day one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE SERVICES -->
+  <div class="core-section">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="tag">What We Do</p>
+      <h2 class="big-title">OUR CORE <span class="red">SERVICES</span></h2>
+      <div class="bar center"></div>
+    </div>
+    <div class="core-grid" id="core-grid">
+      <div class="core-card" onclick="go('services');setTimeout(function(){openM('website')},80)">
+        <div class="ibox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h4>Web Design</h4>
+        <p>Responsive websites from &euro;349</p>
+        <span class="clink">View Packages &#8594;</span>
+      </div>
+      <div class="core-card" onclick="go('services');setTimeout(function(){openM('erp')},80)">
+        <div class="ibox"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h4>ERP Systems</h4>
+        <p>Enterprise resource planning</p>
+        <span class="clink">Learn More &#8594;</span>
+      </div>
+      <div class="core-card" onclick="go('services');setTimeout(function(){openM('mobile')},80)">
+        <div class="ibox"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <h4>Mobile Apps</h4>
+        <p>iOS &amp; Android development</p>
+        <span class="clink">Learn More &#8594;</span>
+      </div>
+      <div class="core-card" onclick="go('services');setTimeout(function(){openM('crm')},80)">
+        <div class="ibox"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h4>CRM Systems</h4>
+        <p>Customer relationship management</p>
+        <span class="clink">Learn More &#8594;</span>
+      </div>
+      <div class="core-card" onclick="go('services');setTimeout(function(){openM('product')},80)">
+        <div class="ibox"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h4>Product Dev</h4>
+        <p>End-to-end product development</p>
+        <span class="clink">Learn More &#8594;</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <button class="btn-red" onclick="go('services')">View All Services</button>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <h2>READY TO LINK YOUR VISION TO REALITY?</h2>
+    <p>Let's build something remarkable together. Book your free discovery call today.</p>
+    <button onclick="go('contact')">Get a Free Quote</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-grid">
+      <div class="ft-brand">
+        <span class="ft-logo">LYNK<span>.</span>AI</span>
+        <p>Bridging ideas and intelligence. We build digital experiences that perform, scale, and inspire.</p>
+      </div>
+      <div class="ft-col"><h5>Company</h5><ul><li><a onclick="go('home')">Home</a></li><li><a onclick="go('about')">About Us</a></li><li><a onclick="go('contact')">Contact</a></li></ul></div>
+      <div class="ft-col"><h5>Services</h5><ul>
+        <li><a onclick="go('services');setTimeout(function(){openM('website')},80)">Web Design</a></li>
+        <li><a onclick="go('services');setTimeout(function(){openM('erp')},80)">ERP Systems</a></li>
+        <li><a onclick="go('services');setTimeout(function(){openM('mobile')},80)">Mobile Apps</a></li>
+        <li><a onclick="go('services');setTimeout(function(){openM('crm')},80)">CRM Systems</a></li>
+        <li><a onclick="go('services');setTimeout(function(){openM('product')},80)">Product Dev</a></li>
+      </ul></div>
+      <div class="ft-col"><h5>Contact</h5><ul><li><a>hello@lynkai.io</a></li><li><a>+31 (0) 555 0100</a></li><li><a>LinkedIn</a></li></ul></div>
+    </div>
+    <div class="ft-bottom"><p>&copy; 2025 <span class="r">Lynk AI</span>. All rights reserved.</p><p>Built with Intelligence.</p></div>
+  </footer>
+</div>
+
+<!-- ========================================= -->
+<!--            SERVICES PAGE                  -->
+<!-- ========================================= -->
+<div id="pg-services" class="page">
+  <div class="svc-header">
+    <p class="tag">What We Offer</p>
+    <h2 class="big-title">OUR <span class="red">SERVICES</span></h2>
+    <div class="bar center"></div>
+    <p style="color:#777;font-size:0.9rem;max-width:460px;margin:0 auto;">Click any card to explore packages, pricing and what is included.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="ibox"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <h3>Website Services</h3>
+      <p>Three packages from &euro;349. Custom layouts, SEO, analytics and AI chatbot add-on available for any tier.</p>
+      <button class="svc-btn" onclick="openM('website')">View Packages &#8594;</button>
+    </div>
+    <div class="svc-card">
+      <div class="ibox"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <h3>ERP Services</h3>
+      <p>Streamline operations with a custom ERP. Integrate finance, HR, inventory and more into one platform.</p>
+      <button class="svc-btn" onclick="openM('erp')">Learn More &#8594;</button>
+    </div>
+    <div class="svc-card">
+      <div class="ibox"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+      <h3>Mobile App Development</h3>
+      <p>Native iOS and Android apps. From MVPs to full-scale applications with AI-powered features.</p>
+      <button class="svc-btn" onclick="openM('mobile')">Learn More &#8594;</button>
+    </div>
+    <div class="svc-card">
+      <div class="ibox"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3>CRM Systems</h3>
+      <p>Manage leads, customers and pipelines. Boost retention, increase conversion and grow revenue.</p>
+      <button class="svc-btn" onclick="openM('crm')">Learn More &#8594;</button>
+    </div>
+    <div class="svc-card">
+      <div class="ibox"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <h3>Product Development</h3>
+      <p>From concept to launch — research, design, development and delivery end-to-end.</p>
+      <button class="svc-btn" onclick="openM('product')">Learn More &#8594;</button>
+    </div>
+  </div>
+  <footer>
+    <div class="ft-grid">
+      <div class="ft-brand"><span class="ft-logo">LYNK<span>.</span>AI</span><p>Bridging ideas and intelligence.</p></div>
+      <div class="ft-col"><h5>Pages</h5><ul><li><a onclick="go('home')">Home</a></li><li><a onclick="go('about')">About</a></li><li><a onclick="go('contact')">Contact</a></li></ul></div>
+      <div class="ft-col"><h5>Services</h5><ul><li><a onclick="openM('website')">Web Design</a></li><li><a onclick="openM('erp')">ERP</a></li><li><a onclick="openM('mobile')">Mobile Apps</a></li><li><a onclick="openM('crm')">CRM</a></li><li><a onclick="openM('product')">Product Dev</a></li></ul></div>
+      <div class="ft-col"><h5>Contact</h5><ul><li><a>hello@lynkai.io</a></li><li><a>+31 (0) 555 0100</a></li></ul></div>
+    </div>
+    <div class="ft-bottom"><p>&copy; 2025 <span class="r">Lynk AI</span>. All rights reserved.</p></div>
+  </footer>
+</div>
+
+<!-- ========================================= -->
+<!--              ABOUT PAGE                   -->
+<!-- ========================================= -->
+<div id="pg-about" class="page">
+  <div class="about-hero">
+    <p class="tag">Who We Are</p>
+    <h2 class="big-title">WE ARE <span class="red">LYNK AI</span></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="about-body">
+    <div class="orbit-wrap">
+      <div class="orbit-text">LYNK AI</div>
+      <div class="ring1"></div>
+      <div class="ring2"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="about-text">
+      <p>Lynk AI is a forward-thinking digital solutions agency dedicated to helping businesses of all sizes harness the power of technology and artificial intelligence.</p>
+      <p>We were founded on a simple belief: <strong style="color:#fff;">technology should be accessible, intelligent, and transformative</strong>. Whether you are a first-time entrepreneur or an established enterprise, every solution is tailored to your exact needs.</p>
+      <p>Our team combines deep technical expertise with creative thinking to deliver websites, applications, and business systems that grow with you.</p>
+      <div class="val-grid">
+        <div class="val-item"><h5>Innovation</h5><p>We push boundaries and embrace new technologies relentlessly.</p></div>
+        <div class="val-item"><h5>Transparency</h5><p>Clear pricing, honest timelines, no hidden surprises.</p></div>
+        <div class="val-item"><h5>Excellence</h5><p>Every pixel, every line of code crafted with intention.</p></div>
+        <div class="val-item"><h5>Partnership</h5><p>We succeed when you succeed — always in your corner.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-band">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="tag">By the Numbers</p>
+      <h2 class="big-title">OUR <span class="red">IMPACT</span></h2>
+      <div class="bar center"></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="num">30+</div><div class="lbl">Projects</div></div>
+      <div class="stat-box"><div class="num">40+</div><div class="lbl">Clients</div></div>
+      <div class="stat-box"><div class="num">2</div><div class="lbl">Years Since Launch</div></div>
+      <div class="stat-box"><div class="num">98%</div><div class="lbl">Satisfaction</div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="ft-grid">
+      <div class="ft-brand"><span class="ft-logo">LYNK<span>.</span>AI</span><p>Bridging ideas and intelligence.</p></div>
+      <div class="ft-col"><h5>Pages</h5><ul><li><a onclick="go('home')">Home</a></li><li><a onclick="go('services')">Services</a></li><li><a onclick="go('contact')">Contact</a></li></ul></div>
+      <div class="ft-col"><h5>Services</h5><ul><li><a onclick="go('services')">Web Design</a></li><li><a onclick="go('services')">ERP</a></li><li><a onclick="go('services')">Mobile Apps</a></li></ul></div>
+      <div class="ft-col"><h5>Contact</h5><ul><li><a>hello@lynkai.io</a></li></ul></div>
+    </div>
+    <div class="ft-bottom"><p>&copy; 2025 <span class="r">Lynk AI</span>. All rights reserved.</p></div>
+  </footer>
+</div>
+
+<!-- ========================================= -->
+<!--             CONTACT PAGE                  -->
+<!-- ========================================= -->
+<div id="pg-contact" class="page">
+  <div class="contact-hero">
+    <p class="tag">Get In Touch</p>
+    <h2 class="big-title">LET'S <span class="red">CONNECT</span></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="contact-body">
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:12px;">Start Your Project</h3>
+      <p style="color:#888;line-height:1.75;margin-bottom:30px;font-size:0.92rem;">Tell us about your project and we will get back to you with a tailored proposal. Free consultation, no obligations.</p>
+      <div class="c-item"><div class="c-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="c-lbl"><strong>Email</strong><span>hello@lynkai.io</span></div></div>
+      <div class="c-item"><div class="c-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="c-lbl"><strong>Phone</strong><span>+31 (0) 555 0100</span></div></div>
+      <div class="c-item"><div class="c-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="c-lbl"><strong>Location</strong><span>Amsterdam, Netherlands</span></div></div>
+      <div class="c-item"><div class="c-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="c-lbl"><strong>Response Time</strong><span>Within 24 hours</span></div></div>
+    </div>
+    <div>
+      <div class="frow">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="John"></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Doe"></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="john@example.com"></div>
+      <div class="fg"><label>Service Interested In</label>
+        <select><option value="">Select a service...</option><option>Website Services</option><option>ERP Systems</option><option>Mobile App Development</option><option>CRM Systems</option><option>Product Development</option><option>Multiple Services</option></select>
+      </div>
+      <div class="fg"><label>Budget Range</label>
+        <select><option value="">Select your budget...</option><option>100 - 349 EUR</option><option>349 - 749 EUR</option><option>749 - 1,149 EUR</option><option>1,149 - 5,000 EUR</option><option>5,000+ EUR</option></select>
+      </div>
+      <div class="fg"><label>Tell Us About Your Project</label><textarea placeholder="Describe your project, goals, timeline..."></textarea></div>
+      <button id="send-btn" class="btn-red" style="width:100%;padding:14px;" onclick="sendForm()">Send Message</button>
+    </div>
+  </div>
+  <footer>
+    <div class="ft-grid">
+      <div class="ft-brand"><span class="ft-logo">LYNK<span>.</span>AI</span><p>Bridging ideas and intelligence.</p></div>
+      <div class="ft-col"><h5>Pages</h5><ul><li><a onclick="go('home')">Home</a></li><li><a onclick="go('services')">Services</a></li><li><a onclick="go('about')">About</a></li></ul></div>
+      <div class="ft-col"><h5>Services</h5><ul><li><a onclick="go('services')">Web Design</a></li><li><a onclick="go('services')">ERP</a></li><li><a onclick="go('services')">Mobile Apps</a></li></ul></div>
+      <div class="ft-col"><h5>Contact</h5><ul><li><a>hello@lynkai.io</a></li><li><a>+31 (0) 555 0100</a></li></ul></div>
+    </div>
+    <div class="ft-bottom"><p>&copy; 2025 <span class="r">Lynk AI</span>. All rights reserved.</p></div>
+  </footer>
+</div>
+
+<!-- ========================================= -->
+<!--     WEBSITE MODAL — packages from images  -->
+<!-- ========================================= -->
+<div class="modal-overlay" id="m-website">
+  <div class="modal-box" style="max-width:1040px;">
+    <div class="modal-head">
+      <div><h2>WEBSITE SERVICES</h2><p>Three packages designed for every stage of business growth</p></div>
+      <button class="modal-x" onclick="closeM('website')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- 3 PACKAGES -->
+      <div class="pkg-grid">
+
+        <div class="pkg">
+          <div class="pkg-tier">Package 1</div>
+          <div class="pkg-name">Starter</div>
+          <div class="pkg-price">&euro;349</div>
+          <div class="pkg-for">For individuals, micro businesses &amp; events</div>
+          <ul class="pkg-feats">
+            <li>1 page</li>
+            <li>Up to 5 sections</li>
+            <li>Mobile responsive</li>
+            <li>Contact form</li>
+            <li>Basic SEO setup</li>
+            <li>Deployment included</li>
+            <li>1 week maintenance</li>
+            <li>1 week project duration</li>
+          </ul>
+          <button class="pkg-cta" onclick="closeM('website');go('contact')">Get Started</button>
+        </div>
+
+        <div class="pkg pop">
+          <div class="pkg-tier">Package 2</div>
+          <div class="pkg-name">Business</div>
+          <div class="pkg-price">&euro;749</div>
+          <div class="pkg-for">For small businesses &amp; startups</div>
+          <ul class="pkg-feats">
+            <li>Up to 5 pages</li>
+            <li>Custom layout</li>
+            <li>Responsive design</li>
+            <li>Contact form + social links</li>
+            <li>Basic SEO setup</li>
+            <li>Google Analytics setup</li>
+            <li>1 month maintenance</li>
+            <li>3–4 week project duration</li>
+          </ul>
+          <button class="pkg-cta" onclick="closeM('website');go('contact')">Get Started</button>
+        </div>
+
+        <div class="pkg">
+          <div class="pkg-tier">Package 3</div>
+          <div class="pkg-name">Professional</div>
+          <div class="pkg-price">&euro;1,149</div>
+          <div class="pkg-for">For established businesses</div>
+          <ul class="pkg-feats">
+            <li>Up to 10 pages</li>
+            <li>Custom layout</li>
+            <li>Responsive design</li>
+            <li>Contact form + social links</li>
+            <li>Basic SEO setup</li>
+            <li>Google Analytics setup</li>
+            <li>2 week maintenance</li>
+            <li>Basic CMS</li>
+            <li>1 hour training</li>
+            <li>3 months maintenance</li>
+            <li>Custom UI/UX design</li>
+            <li>Google My Business setup</li>
+            <li>5 weeks project duration</li>
+          </ul>
+          <button class="pkg-cta" onclick="closeM('website');go('contact')">Get Started</button>
+        </div>
+
+      </div>
+
+      <!-- ADD-ONS + PAYMENT -->
+      <div class="extra-row">
+
+        <div class="extra-box">
+          <div class="box-tag">Optional Add-Ons</div>
+          <table class="ao-table">
+            <thead><tr><th style="text-align:left;">Item</th><th>Price</th></tr></thead>
+            <tbody>
+              <tr><td>Extra Section</td><td class="price-cell">&euro;15</td></tr>
+              <tr><td>Extra Page</td><td class="price-cell">&euro;25</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="extra-box red-box">
+          <div class="box-tag">Payment Structure</div>
+          <div class="pay-row">
+            <div class="pay-item"><span>Upfront</span><strong>40%</strong></div>
+            <div class="pay-item"><span>After Design Approval</span><strong>40%</strong></div>
+            <div class="pay-item highlight"><span>Before Launch</span><strong>20%</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AI CHATBOT ADD-ON -->
+      <div class="ai-box">
+        <div style="flex:1;">
+          <div style="color:#E50914;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Optional — All Packages</div>
+          <h4>AI Chatbot Integration</h4>
+          <p>Handle FAQs, capture leads, book appointments and provide 24/7 support — fully trained on your brand. Available for any package as an add-on.</p>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="ai-price">Custom</div>
+          <div class="ai-sub">pricing available</div>
+          <button class="svc-btn" onclick="closeM('website');go('contact')">Inquire &#8594;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ========== ERP MODAL ========== -->
+<div class="modal-overlay" id="m-erp">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div><h2>ERP SERVICES</h2><p>Enterprise Resource Planning for growing businesses</p></div>
+      <button class="modal-x" onclick="closeM('erp')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-body">
+        <h4>What is an ERP System?</h4>
+        <p>An ERP integrates all core business processes — finance, HR, inventory, procurement, sales, and more — into one unified platform, giving you real-time visibility across your entire operation.</p>
+        <h4>What We Offer</h4>
+        <ul>
+          <li>Custom ERP development tailored to your industry</li>
+          <li>Implementation of leading platforms (Odoo, SAP, Microsoft Dynamics)</li>
+          <li>Module integration: Finance, HR, Inventory, CRM, Manufacturing</li>
+          <li>Data migration from legacy systems</li>
+          <li>Staff training and full onboarding</li>
+          <li>Ongoing maintenance and support contracts</li>
+        </ul>
+        <h4>AI Enhancement</h4>
+        <p>Add AI-powered analytics, demand forecasting, and automated workflows to turn raw business data into actionable intelligence.</p>
+        <h4>Pricing</h4>
+        <p>Engagements start from <span class="ph">&euro;2,500</span>. Contact us for a tailored quote.</p>
+      </div>
+      <button class="btn-red" style="width:100%;margin-top:26px;" onclick="closeM('erp');go('contact')">Request ERP Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MOBILE MODAL ========== -->
+<div class="modal-overlay" id="m-mobile">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div><h2>MOBILE APP DEVELOPMENT</h2><p>iOS &amp; Android apps built for scale</p></div>
+      <button class="modal-x" onclick="closeM('mobile')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-body">
+        <h4>Our Approach</h4>
+        <p>We build native and cross-platform mobile applications using React Native, Flutter, Swift, and Kotlin — designed for performance, reliability and exceptional user experience.</p>
+        <h4>Services Include</h4>
+        <ul>
+          <li>MVP (Minimum Viable Product) rapid development</li>
+          <li>Full-scale iOS &amp; Android app development</li>
+          <li>UX/UI design and interactive prototyping</li>
+          <li>Backend API development and third-party integrations</li>
+          <li>Push notifications, offline support, and analytics</li>
+          <li>App Store &amp; Google Play submission</li>
+          <li>Ongoing maintenance and feature updates</li>
+        </ul>
+        <h4>AI-Powered Features</h4>
+        <p>Integrate AI assistants, image recognition, personalisation engines, and predictive recommendations into your app.</p>
+        <h4>Pricing</h4>
+        <p>Apps start from <span class="ph">&euro;3,000</span> for a basic MVP. Complex applications quoted per project.</p>
+      </div>
+      <button class="btn-red" style="width:100%;margin-top:26px;" onclick="closeM('mobile');go('contact')">Request App Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CRM MODAL ========== -->
+<div class="modal-overlay" id="m-crm">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div><h2>CRM SYSTEMS</h2><p>Customer relationships, reimagined</p></div>
+      <button class="modal-x" onclick="closeM('crm')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-body">
+        <h4>What We Build</h4>
+        <p>From configuring HubSpot and Salesforce to fully custom CRM platforms, we help you manage every customer interaction from first contact to long-term loyalty.</p>
+        <h4>Features We Deliver</h4>
+        <ul>
+          <li>Contact and lead management pipelines</li>
+          <li>Sales funnel tracking and automation</li>
+          <li>Email marketing integration</li>
+          <li>Customer support ticketing system</li>
+          <li>Reporting dashboards and analytics</li>
+          <li>Integration with your existing tools</li>
+          <li>Mobile CRM access</li>
+        </ul>
+        <h4>AI Integration</h4>
+        <p>Add AI lead scoring, smart follow-up recommendations and automated outreach to increase conversion and reduce manual workload.</p>
+        <h4>Pricing</h4>
+        <p>CRM solutions start from <span class="ph">&euro;1,200</span>. Custom builds quoted by scope.</p>
+      </div>
+      <button class="btn-red" style="width:100%;margin-top:26px;" onclick="closeM('crm');go('contact')">Request CRM Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PRODUCT MODAL ========== -->
+<div class="modal-overlay" id="m-product">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div><h2>PRODUCT DEVELOPMENT</h2><p>From idea to launch &mdash; end to end</p></div>
+      <button class="modal-x" onclick="closeM('product')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-body">
+        <h4>Our Process</h4>
+        <p>We take your idea through a structured lifecycle: Discovery &#8594; Design &#8594; Build &#8594; Test &#8594; Launch &#8594; Grow. Every phase handled by our expert team.</p>
+        <h4>What's Included</h4>
+        <ul>
+          <li>Product discovery workshops and strategy sessions</li>
+          <li>Market research and competitor analysis</li>
+          <li>User experience research and persona development</li>
+          <li>Wireframing and interactive prototyping</li>
+          <li>Full-stack development (web and/or mobile)</li>
+          <li>QA testing and performance audits</li>
+          <li>Launch support and growth analytics setup</li>
+        </ul>
+        <h4>AI as a Core Feature</h4>
+        <p>We embed AI natively — recommendation engines, NLP, computer vision, or custom LLM integrations that become your competitive advantage.</p>
+        <h4>Pricing</h4>
+        <p>Engagements start from <span class="ph">&euro;5,000</span>. Retainer and equity models available for startups.</p>
+      </div>
+      <button class="btn-red" style="width:100%;margin-top:26px;" onclick="closeM('product');go('contact')">Start Your Product Journey</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================= -->
+<!--                JAVASCRIPT                 -->
+<!-- ========================================= -->
+<script>
+// ---- PAGE NAVIGATION ----
+function go(name) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('pg-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+  var nav = document.getElementById('n-' + name);
+  if (nav) nav.classList.add('active');
+  if (name === 'home') popCards();
+}
+
+// ---- MODAL OPEN / CLOSE ----
+function openM(name) {
+  var el = document.getElementById('m-' + name);
+  if (!el) return;
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeM(name) {
+  var el = document.getElementById('m-' + name);
+  if (!el) return;
+  el.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// close on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(function(ov) {
+  ov.addEventListener('click', function(e) {
+    if (e.target === ov) {
+      ov.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+// close on ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(function(ov) {
+      ov.style.display = 'none';
+    });
+    document.body.style.overflow = '';
+  }
+});
+
+// ---- CORE CARDS POP ANIMATION ----
+function popCards() {
+  var cards = document.querySelectorAll('.core-card');
+  cards.forEach(function(c) { c.classList.remove('popped'); });
+  // Use getBoundingClientRect after a paint cycle
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      checkCards();
+    });
+  });
+}
+
+function checkCards() {
+  var cards = document.querySelectorAll('.core-card');
+  var wh = window.innerHeight;
+  cards.forEach(function(card) {
+    var rect = card.getBoundingClientRect();
+    if (rect.top < wh + 50) {
+      card.classList.add('popped');
+    }
+  });
+}
+
+window.addEventListener('scroll', function() {
+  if (document.getElementById('pg-home').classList.contains('active')) {
+    checkCards();
+  }
+}, { passive: true });
+
+// ---- CONTACT FORM ----
+function sendForm() {
+  var btn = document.getElementById('send-btn');
+  btn.textContent = 'Message Sent!';
+  btn.style.background = '#1a7a2e';
+  btn.disabled = true;
+  setTimeout(function() {
+    btn.textContent = 'Send Message';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 3000);
+}
+
+// ---- INIT ----
+// Trigger pop on first load
+setTimeout(popCards, 200);
+</script>
+</body>
+</html>
