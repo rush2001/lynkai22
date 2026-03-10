@@ -13,7 +13,7 @@ body { background: #0a0a0a; color: #fff; font-family: 'Outfit', sans-serif; over
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: #E50914; border-radius: 4px; }
 
-/* ---- NAV ---- */
+
 nav {
   position: fixed; top: 0; width: 100%; z-index: 9999;
   background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
@@ -36,11 +36,11 @@ nav {
 }
 .nav-cta:hover { background: #b2070f; }
 
-/* ---- PAGES ---- */
+
 .page { display: none; min-height: 100vh; padding-top: 68px; }
 .page.active { display: block; }
 
-/* ---- BUTTONS ---- */
+
 .btn-red {
   background: #E50914; color: #fff; padding: 13px 32px; border: none; border-radius: 4px;
   cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600;
@@ -56,7 +56,7 @@ nav {
 }
 .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.06); }
 
-/* ---- HERO ---- */
+
 .hero {
   min-height: calc(100vh - 68px); display: flex; align-items: center;
   position: relative; overflow: hidden;
@@ -89,14 +89,14 @@ nav {
 .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: #E50914; line-height: 1; }
 .stat-lbl { font-size: 0.68rem; color: #555; letter-spacing: 2px; text-transform: uppercase; }
 
-/* ---- SECTION HELPERS ---- */
+
 .tag { color: #E50914; font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 12px; }
 .big-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 0.95; }
 .big-title .red { color: #E50914; }
 .bar { width: 52px; height: 3px; background: #E50914; margin: 16px 0 48px; }
 .bar.center { margin-left: auto; margin-right: auto; }
 
-/* ---- ICON BOX ---- */
+
 .ibox {
   width: 46px; height: 46px; border-radius: 6px;
   background: rgba(229,9,20,0.1); border: 1px solid rgba(229,9,20,0.2);
@@ -104,7 +104,7 @@ nav {
 }
 .ibox svg { width: 20px; height: 20px; stroke: #E50914; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-/* ---- WHY US ---- */
+
 .why-section { padding: 90px 5vw; background: #111; }
 .why-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -116,13 +116,13 @@ nav {
 .feat-card h4 { font-size: 0.92rem; margin-bottom: 6px; }
 .feat-card p { color: #555; font-size: 0.8rem; line-height: 1.6; }
 
-/* ---- CORE SERVICES ---- */
+
 .core-section { padding: 90px 5vw; }
 .core-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; max-width: 1200px; margin: 0 auto; }
 .core-card {
   background: #111; padding: 36px 24px; cursor: pointer;
   border: 1px solid rgba(255,255,255,0.04); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-  /* pop-up animation */
+
   opacity: 0; transform: translateY(50px) scale(0.9);
   transition: opacity 0.55s cubic-bezier(0.34,1.56,0.64,1), transform 0.55s cubic-bezier(0.34,1.56,0.64,1),
               border-color 0.3s, box-shadow 0.3s;
@@ -138,7 +138,7 @@ nav {
 .core-card p { color: #555; font-size: 0.78rem; margin-bottom: 14px; }
 .core-card .clink { font-size: 0.7rem; color: #E50914; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #E50914; padding-bottom: 1px; }
 
-/* ---- CTA BAND ---- */
+
 .cta-band {
   padding: 80px 5vw; background: #E50914; text-align: center; position: relative; overflow: hidden;
 }
@@ -156,7 +156,7 @@ nav {
 }
 .cta-band button:hover { transform: scale(1.04); }
 
-/* ---- SERVICES PAGE ---- */
+
 .svc-header { padding: 70px 5vw 44px; text-align: center; }
 .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; padding: 0 5vw 80px; max-width: 1400px; margin: 0 auto; }
 .svc-card {
@@ -174,7 +174,7 @@ nav {
 }
 .svc-btn:hover { background: #E50914; color: #fff; }
 
-/* ---- ABOUT PAGE ---- */
+
 .about-hero { padding: 70px 5vw 60px; }
 .about-body { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; padding: 0 5vw 80px; align-items: center; }
 .orbit-wrap {
@@ -198,7 +198,7 @@ nav {
 .stat-box .num { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; color: #E50914; }
 .stat-box .lbl { color: #555; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
 
-/* ---- CONTACT PAGE ---- */
+
 .contact-hero { padding: 70px 5vw 60px; }
 .contact-body { display: grid; grid-template-columns: 1fr 1.5fr; gap: 70px; padding: 0 5vw 80px; }
 .c-item { display: flex; gap: 14px; margin-bottom: 22px; align-items: flex-start; }
@@ -218,7 +218,7 @@ nav {
 .fg select option { background: #1a1a1a; }
 .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-/* ---- FOOTER ---- */
+
 footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding: 56px 5vw 28px; }
 .ft-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
 .ft-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 3px; display: block; margin-bottom: 12px; }
@@ -233,7 +233,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .ft-bottom p { color: #333; font-size: 0.76rem; }
 .ft-bottom .r { color: #E50914; }
 
-/* ---- MODAL OVERLAY ---- */
+
 .modal-overlay {
   display: none;
   position: fixed; inset: 0; z-index: 99999;
@@ -263,7 +263,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .modal-x:hover { background: #E50914; color: #fff; }
 .modal-body { padding: 34px 40px; }
 
-/* ---- PRICING CARDS (modal) ---- */
+
 .pkg-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
 .pkg {
   background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px;
@@ -296,7 +296,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .pkg.pop .pkg-cta { background: #E50914; color: #fff; border-color: #E50914; }
 .pkg.pop .pkg-cta:hover { background: #b2070f; }
 
-/* ---- ADD-ONS + PAYMENT ROW ---- */
+
 .extra-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
 .extra-box { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 24px 26px; }
 .extra-box.red-box { background: rgba(229,9,20,0.05); border-color: rgba(229,9,20,0.2); }
@@ -318,7 +318,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .pay-item strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #fff; }
 .pay-item.highlight strong { color: #E50914; }
 
-/* ---- AI ADD-ON BOX ---- */
+
 .ai-box {
   background: rgba(229,9,20,0.04); border: 1px solid rgba(229,9,20,0.18);
   border-radius: 8px; padding: 24px 28px; display: flex; align-items: center;
@@ -329,7 +329,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .ai-box .ai-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #E50914; white-space: nowrap; text-align: right; }
 .ai-box .ai-sub { font-size: 0.72rem; color: #555; margin-bottom: 10px; }
 
-/* ---- INFO MODAL (ERP, CRM etc) ---- */
+
 .info-body { color: #aaa; font-size: 0.9rem; line-height: 1.8; }
 .info-body h4 { color: #fff; font-size: 0.98rem; font-weight: 600; margin: 24px 0 8px; }
 .info-body h4:first-child { margin-top: 0; }
@@ -337,7 +337,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 .info-body ul li { margin-bottom: 5px; font-size: 0.84rem; }
 .ph { color: #E50914; font-weight: 600; }
 
-/* ---- RESPONSIVE ---- */
+
 @media (max-width: 900px) {
   .hero-stats { display: none; }
   .why-grid, .about-body, .contact-body { grid-template-columns: 1fr; }
@@ -360,7 +360,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 </head>
 <body>
 
-<!-- ========== NAV ========== -->
+
 <nav>
   <span class="logo" onclick="go('home')">LYNK<span>.</span>AI</span>
   <ul class="nav-links">
@@ -372,12 +372,10 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   <button class="nav-cta" onclick="go('contact')">Get Started</button>
 </nav>
 
-<!-- ========================================= -->
-<!--              HOME PAGE                    -->
-<!-- ========================================= -->
+
 <div id="pg-home" class="page active">
 
-  <!-- HERO -->
+  
   <div class="hero">
     <div class="hero-grid"></div>
     <div class="hero-content">
@@ -396,7 +394,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
     </div>
   </div>
 
-  <!-- WHY US -->
+
   <div class="why-section">
     <div class="why-grid">
       <div>
@@ -432,7 +430,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
     </div>
   </div>
 
-  <!-- CORE SERVICES -->
+
   <div class="core-section">
     <div style="text-align:center;margin-bottom:48px;">
       <p class="tag">What We Do</p>
@@ -476,14 +474,14 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
     </div>
   </div>
 
-  <!-- CTA BAND -->
+  
   <div class="cta-band">
     <h2>READY TO LINK YOUR VISION TO REALITY?</h2>
     <p>Let's build something remarkable together. Book your free discovery call today.</p>
     <button onclick="go('contact')">Get a Free Quote</button>
   </div>
 
-  <!-- FOOTER -->
+ 
   <footer>
     <div class="ft-grid">
       <div class="ft-brand">
@@ -504,9 +502,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </footer>
 </div>
 
-<!-- ========================================= -->
-<!--            SERVICES PAGE                  -->
-<!-- ========================================= -->
+
 <div id="pg-services" class="page">
   <div class="svc-header">
     <p class="tag">What We Offer</p>
@@ -557,9 +553,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </footer>
 </div>
 
-<!-- ========================================= -->
-<!--              ABOUT PAGE                   -->
-<!-- ========================================= -->
+
 <div id="pg-about" class="page">
   <div class="about-hero">
     <p class="tag">Who We Are</p>
@@ -609,9 +603,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </footer>
 </div>
 
-<!-- ========================================= -->
-<!--             CONTACT PAGE                  -->
-<!-- ========================================= -->
+
 <div id="pg-contact" class="page">
   <div class="contact-hero">
     <p class="tag">Get In Touch</p>
@@ -654,9 +646,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </footer>
 </div>
 
-<!-- ========================================= -->
-<!--     WEBSITE MODAL — packages from images  -->
-<!-- ========================================= -->
+
 <div class="modal-overlay" id="m-website">
   <div class="modal-box" style="max-width:1040px;">
     <div class="modal-head">
@@ -665,7 +655,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
     </div>
     <div class="modal-body">
 
-      <!-- 3 PACKAGES -->
+     
       <div class="pkg-grid">
 
         <div class="pkg">
@@ -729,7 +719,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 
       </div>
 
-      <!-- ADD-ONS + PAYMENT -->
+   
       <div class="extra-row">
 
         <div class="extra-box">
@@ -754,7 +744,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
 
       </div>
 
-      <!-- AI CHATBOT ADD-ON -->
+   
       <div class="ai-box">
         <div style="flex:1;">
           <div style="color:#E50914;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Optional — All Packages</div>
@@ -772,7 +762,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </div>
 </div>
 
-<!-- ========== ERP MODAL ========== -->
+
 <div class="modal-overlay" id="m-erp">
   <div class="modal-box" style="max-width:680px;">
     <div class="modal-head">
@@ -802,7 +792,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </div>
 </div>
 
-<!-- ========== MOBILE MODAL ========== -->
+
 <div class="modal-overlay" id="m-mobile">
   <div class="modal-box" style="max-width:680px;">
     <div class="modal-head">
@@ -833,7 +823,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </div>
 </div>
 
-<!-- ========== CRM MODAL ========== -->
+
 <div class="modal-overlay" id="m-crm">
   <div class="modal-box" style="max-width:680px;">
     <div class="modal-head">
@@ -864,7 +854,7 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </div>
 </div>
 
-<!-- ========== PRODUCT MODAL ========== -->
+
 <div class="modal-overlay" id="m-product">
   <div class="modal-box" style="max-width:680px;">
     <div class="modal-head">
@@ -895,11 +885,9 @@ footer { background: #111; border-top: 1px solid rgba(255,255,255,0.05); padding
   </div>
 </div>
 
-<!-- ========================================= -->
-<!--                JAVASCRIPT                 -->
-<!-- ========================================= -->
+
 <script>
-// ---- PAGE NAVIGATION ----
+
 function go(name) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('pg-' + name).classList.add('active');
@@ -910,7 +898,7 @@ function go(name) {
   if (name === 'home') popCards();
 }
 
-// ---- MODAL OPEN / CLOSE ----
+
 function openM(name) {
   var el = document.getElementById('m-' + name);
   if (!el) return;
@@ -924,7 +912,6 @@ function closeM(name) {
   document.body.style.overflow = '';
 }
 
-// close on backdrop click
 document.querySelectorAll('.modal-overlay').forEach(function(ov) {
   ov.addEventListener('click', function(e) {
     if (e.target === ov) {
@@ -934,7 +921,7 @@ document.querySelectorAll('.modal-overlay').forEach(function(ov) {
   });
 });
 
-// close on ESC
+
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay').forEach(function(ov) {
@@ -944,11 +931,11 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// ---- CORE CARDS POP ANIMATION ----
+
 function popCards() {
   var cards = document.querySelectorAll('.core-card');
   cards.forEach(function(c) { c.classList.remove('popped'); });
-  // Use getBoundingClientRect after a paint cycle
+  
   requestAnimationFrame(function() {
     requestAnimationFrame(function() {
       checkCards();
@@ -973,7 +960,7 @@ window.addEventListener('scroll', function() {
   }
 }, { passive: true });
 
-// ---- CONTACT FORM ----
+
 function sendForm() {
   var btn = document.getElementById('send-btn');
   btn.textContent = 'Message Sent!';
@@ -986,8 +973,7 @@ function sendForm() {
   }, 3000);
 }
 
-// ---- INIT ----
-// Trigger pop on first load
+
 setTimeout(popCards, 200);
 </script>
 </body>
